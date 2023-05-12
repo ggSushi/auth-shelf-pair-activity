@@ -32,17 +32,26 @@ function ShelfPage() {
       console.log(`Error in POST: ${error}`);
       alert(`Get that offa the shelf!`);
     })
-  }
+  } // end of addItem();
+
+  const deleteItem = (id) => {
+    console.log(id)
+    axios.delete(`/api/shelf/${id}`).then(res => {
+      fetchShelf();
+    }).catch(error => {
+      console.log(`Error in deleteItem: ${error}`);
+    });
+  } // end of deleteItem();
 
   const handleDescriptionChange = (event) => {
     setDescription(event.target.value)
     console.log(description)
-  }
+  } // end of hendleDescriptionChange();
 
   const handleImgChange = (event) => {
     setImgUrl(event.target.value)
     console.log(imgUrl)
-  }
+  } // end of handleImgChange
 
   return (
     <div className="container">
@@ -50,7 +59,7 @@ function ShelfPage() {
       <form onSubmit={addItem}>
         <input onChange={handleDescriptionChange} type="text" placeholder="description" />
         <input onChange={handleImgChange} type="text" placeholder="image" />
-        <input type="submit"/>
+        <input type="submit" />
       </form>
       <h2>Shelf</h2>
       <p>All of the available items can be seen here.</p>
@@ -62,15 +71,15 @@ function ShelfPage() {
       {
         shelfList.map(item => {
           return <div className="responsive" key={item.id}>
-                    <div className="gallery">
-                        <img src={item.image_url} alt={item.description} />
-                        <br />
-                        <div className="desc">{item.description}</div>
-                        <div style={{textAlign: 'center', padding: '5px'}}>
-                          <button style={{cursor: 'pointer'}}>Delete</button>
-                        </div>
-                    </div>
-                 </div>
+            <div className="gallery">
+              <img src={item.image_url} alt={item.description} />
+              <br />
+              <div className="desc">{item.description}</div>
+              <div style={{ textAlign: 'center', padding: '5px' }}>
+                <button onClick={() => deleteItem(item.id) } style={{ cursor: 'pointer' }}>Delete</button>
+              </div>
+            </div>
+          </div>
         })
       }
       <div className="clearfix"></div>

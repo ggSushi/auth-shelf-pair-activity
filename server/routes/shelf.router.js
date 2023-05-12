@@ -18,8 +18,22 @@ router.get('/', (req, res) => {
 /**
  * Add an item for the logged in user to the shelf
  */
+
+// !!! IF COPYING TEXT FROM ELSEWHERE, MAKE SURE TO RE-WRITE IT. IT COULD GIVE YOU AN ERROR BECAUSE OF FONT !!!
 router.post('/', (req, res) => {
   // endpoint functionality
+  console.log(`In POST request`, req.body);
+  let queryText = `Insert Into "item" ("description", "image_url", "user_id")
+  Values ($1, $2, $3);`;
+  pool.query(queryText,
+    [req.body.description, req.body.image_url, req.user.id])
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch(error => {
+      console.log(error);
+      res.sendStatus(500);
+    });
 });
 
 /**
